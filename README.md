@@ -4,10 +4,12 @@ Developed with the Django frameworks for web applications in Python.
 Eventually supposed to be hosted locally in the school network on a raspberry pi.
 
 ## (current) Functionaltities
-    *Todo: better website design*
+*Todo: better website design*
 ### User registration, login and logout
 In `/register`, users can register a new account using a school email. It uses Django-inbuilt functionality, so there's a fair amount of security and checks in place.
-    *Todo: more checks for a valid school email, restrict registering to the unauthenticated*
+
+*Todo: more checks for a valid school email, restrict registering to the unauthenticated*
+
 In '/login', users can logout and login depending on if they're already authenticated.
 
 ### Profile
@@ -23,7 +25,10 @@ Here I try to keep track of tutorials and references used throughout the develop
 *Used as reference for Django, HTML, CSS and many other things*
 
 -[How to write a readme document](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+
 -[Login System](https://rahmanfadhil.com/django-login-with-email/)
+
 -[Class-based views](https://docs.djangoproject.com/en/4.1/topics/class-based-views/)
+
 -[Collapsible Sidebar with CSS](https://stackoverflow.com/questions/30574902/collapsible-flexible-width-sidebar-using-only-css)
 
