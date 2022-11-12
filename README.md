@@ -23,7 +23,7 @@ Here I try to keep track of tutorials and references used throughout the develop
 
 - [W3 schools](https://www.w3schools.com/)
 *Used as reference for Django, HTML, CSS and many other things*
--[How to write a readme document](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+- [How to write a readme document](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
 - [Login System](https://rahmanfadhil.com/django-login-with-email/)
 - [Class-based views](https://docs.djangoproject.com/en/4.1/topics/class-based-views/)
 - [Collapsible Sidebar with CSS](https://stackoverflow.com/questions/30574902/collapsible-flexible-width-sidebar-using-only-css)
