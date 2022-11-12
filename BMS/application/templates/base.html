@@ -1,0 +1,55 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{% static 'design.css' %}">
+        <meta name="Bike management system">
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'> <!--Damit das reinzoomen bei Smartphones verhindert wird (strg-v aus dem Internet)-->
+        <link rel="shortcut icon" href="/static/favicon.png" />
+        {% block title %}
+        <title> BMS </title>
+        {% endblock %}
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="header-container">
+                <button id="sidebar-button" onclick="document.getElementsByClassName('left')[0].classList.toggle('collapsed')">
+                    <div id="button-image"></div>
+                </button>
+                    
+                <div id="header">
+                    {% block header %}
+                    {% endblock %}
+                </div>
+            </div>
+            
+
+            <div class="content-container">
+                <div class="left" id="left">
+                    <!--if user is logged in, change the label of the login link-->
+                    <a class="page-links" href="{% url 'login' %}">
+                        {% if user.is_authenticated %}
+                            Logout
+                        {% else %}
+                            Login
+                        {% endif %}
+                    </a>
+
+                    <a class="page-links" href="{% url 'profile' %}">Profile</a>
+                    <a class="page-links" href="{% url 'register' %}">Register</a>
+
+                </div>
+
+                <section id="content">
+                    {% block content %}    
+                    {% endblock %}            
+                </section>                
+            </div>            
+        </div>
+    </body>
+</html>

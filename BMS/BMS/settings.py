@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 
+# register custom authenthication model and backend for django's standard authentication system
+AUTH_USER_MODEL = 'application.User'
+AUTHENTICATION_BACKENDS = ['application.backends.EmailBackend']
+
+# where to redirect after login/logout forms are sent
+LOGIN_REDIRECT_URL = "profile"
+LOGOUT_REDIRECT_URL = "login" 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # own apps
+    'application.apps.ApplicationConfig',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +127,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# I don't know if this needs changing, static files work for now
 STATIC_URL = '/static/'
 
 # Default primary key field type
