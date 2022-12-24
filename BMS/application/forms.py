@@ -4,6 +4,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext, gettext_lazy as _
 from .validators import schoolEmailValidator
+from .models import Bike
 
 
 # custom RegisterForm without the "username" field
@@ -16,9 +17,16 @@ class RegisterForm(UserCreationForm):
 
     class Meta:
         model = get_user_model()
-        fields = ( "email", "name", 'password1', "password2")
+        fields = ( "email", "name", 'password1', "password2", "username")
 
 
 # custom LoginForm that changes the label of the username field
 class LoginForm(AuthenticationForm):
     username = forms.CharField(label='Email')
+
+
+class BikeCreationForm(forms.ModelForm):
+
+    class Meta:
+        model = Bike
+        fields = ["number", "steward", "size"]

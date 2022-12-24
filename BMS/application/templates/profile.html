@@ -14,5 +14,14 @@
     <br>
     Your preferred name is {{ user.name }}
 </p>
-<p>Here could be my bike-borrowing history...</p>
+<h2>
+    Bike borrowing history
+</h2>
+<p>
+    {% for instance in borrowings %}
+
+    {% endfor %}
+</p>
+
+
 {% endblock %}

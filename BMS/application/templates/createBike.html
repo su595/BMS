@@ -1,0 +1,17 @@
+
+{% extends "base.html" %}
+
+{% block header %}
+  <h1>Regsiter a new bike</h1>
+{% endblock %}
+
+
+{% block content %}
+
+  <form success_view="{% url 'createBike' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" id="submit">Create new bike!</button>
+  </form>
+
+  {% endblock %}
