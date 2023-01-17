@@ -8,12 +8,13 @@ Eventually supposed to be hosted locally in the school network on a raspberry pi
 ### User registration, login and logout
 In `/register`, users can register a new account using a school email. It uses Django-inbuilt functionality, so there's a fair amount of security and checks in place.
 
-*Todo: more checks for a valid school email, restrict registering to the unauthenticated*
-
 In '/login', users can logout and login depending on if they're already authenticated.
 
 ### Profile
-`/profile` is a placeholder site to display all available account info.
+`/profile` is a temporary site to display all available account info. 
+
+### Borrowing
+Borrowing processes and bikes can be created with the required characteristcs 
 
 ## Hardware
 In the final version, there is a cabinet in H6 featuring holes for each bike key and sensors to detect the presence of keys. The cabinet has an electronically locked door. An arduino communicates with the server about the presence of keys and opens the door when a borrowing request is made (and vice versa when bike keys are returned).
