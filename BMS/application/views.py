@@ -1,5 +1,5 @@
 from django.contrib.auth import views as auth_views
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import generic
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -45,6 +45,14 @@ class ProfileView(LoginRequiredMixin, generic.TemplateView):
 
     template_name = "profile.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # add all borrowings of current user to context
+        context["borrowings"] = Borrowing.objects.filter(borrower__id=self.request.user.pk).order_by("start_time")
+
+        return context
+
 
 class UserListView(PermissionRequiredMixin, generic.TemplateView):
     permission_required = "application.view_user"
@@ -81,8 +89,8 @@ class ChangeUserView(PermissionRequiredMixin, generic.UpdateView):
             something_changed = True            
         
         # if there's a new name, update the user
-        if form.cleaned_data["name"] != user.first_name or form.cleaned_data["name"] is not None:
-            user.first_name = form.cleaned_data["name"]
+        if form.cleaned_data["first_name"] != user.first_name or form.cleaned_data["first_name"] is not None:
+            user.first_name = form.cleaned_data["first_name"]
             something_changed = True
         
         # if something changed, save the new user
@@ -108,22 +116,25 @@ class CreateBikeView(PermissionRequiredMixin, generic.CreateView):
     template_name = "createBike.html"
 
 
-class BorrowBikeView(PermissionRequiredMixin, generic.CreateView):
+class BorrowBikeView(PermissionRequiredMixin, generic.FormView):
     permission_required = "application.add_borrowing"
 
     # create a new bike borrowing
     form_class = BorrowingCreationForm
-    success_url = "borrow/"
+    success_url = reverse_lazy("bikeList")
     template_name = "createBorrowing.html"
 
     def form_valid(self, form):
-        form.cleaned_data["borrower"] = self.request.user
+        # the form only has endtime, so just make a borrowing when its submitted successfully
 
-        # if the start time is empty, set it to now
-        if form.cleaned_data["start_time"] is None:
-            form.cleaned_data["start_time"] = timezone.now()
+        Borrowing.objects.create(
+            borrower=self.request.user, 
+            borrowed_bike=Bike.objects.get(pk=self.kwargs["bikepk"]), 
+            start_time=timezone.now(),
+            end_time=form.cleaned_data["end_time"]
+        )
 
-        return super().form_valid(form)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class BikeListView(PermissionRequiredMixin, generic.TemplateView):
@@ -135,7 +146,7 @@ class BikeListView(PermissionRequiredMixin, generic.TemplateView):
         context = super().get_context_data(**kwargs)
         # extent the context with a "Bikes" section, that contains all bike instances
         context["Bikes"] = Bike.objects.all()
-        context["Borrowings"] = Borrowing.objects.all()
+        context["Borrowings"] = Borrowing.objects.all().order_by("-end_time")
 
         return context
 

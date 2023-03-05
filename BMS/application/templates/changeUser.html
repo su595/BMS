@@ -1,15 +1,11 @@
 {% extends "base.html" %}
 
-{% block header %}
+{% block title %}
 <h1>Change User</h1>
 {% endblock %}
 
 
 {% block content %}
-
-<p>
-test {{ user.groups }}
-</p>
 
 <form method="post"> <!--I must not provide a url, otherwise the argument data (user id) gets discarded-->
   {% csrf_token %}

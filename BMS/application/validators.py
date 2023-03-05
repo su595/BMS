@@ -22,5 +22,7 @@ def bikeSizeValidator(size):
     if size.upper() == "S" or size.upper() == "M" or size.upper() == "L":
         return size.upper()
             
-    return "not good :("
+    raise ValidationError(
+        "not correct size :("
+    )
 

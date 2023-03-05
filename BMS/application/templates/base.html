@@ -10,7 +10,7 @@
         <meta name="Bike management system">
         <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'> <!--Damit das reinzoomen bei Smartphones verhindert wird (strg-v aus dem Internet)-->
         <link rel="shortcut icon" href="{% static 'favicon.png' %}">
-        {% block title %}
+        {% block head %}
         <title> BMS </title>
         {% endblock %}
     </head>
@@ -23,7 +23,7 @@
                 </button>
                     
                 <div id="header-block">
-                    {% block header %}
+                    {% block title %}
                     {% endblock %}
                 </div>
 
@@ -62,9 +62,6 @@
                     {% endif %}
                     {% if perms.application.view_bike %}
                         <a class="page-links" href="{% url 'bikeList' %}">Bike List</a>
-                    {% endif %}
-                    {% if perms.application.add_borrowing %}
-                        <a class="page-links" href="{% url 'borrow' %}">Borrow bike</a>
                     {% endif %}
                     {% if perms.application.view_bike %}
                         <a class="page-links" href="{% url 'user-view' %}">User List</a>

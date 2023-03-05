@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from .validators import schoolEmailValidator, bikeSizeValidator
 from django.urls import reverse
+from django.utils import timezone
 
 # refer to ERM diagrams on my tablet
 # some comments refer to features which haven't been implemented yet!!
@@ -35,6 +36,11 @@ class User(AbstractUser):
         
     def get_absolute_url(self):
         return reverse('user-change', kwargs={'pk': self.pk})
+    
+    class Meta:
+        permissions = [
+            ("own_bike", "Can be a bike steward")
+        ]
     
 
 class Bike(models.Model):
@@ -70,7 +76,7 @@ class Bike(models.Model):
     )
 
     def __str__(self) -> str:
-        return str(self.number)
+        return "Bike {0}".format(self.number)
 
 
 class Issue(models.Model):
@@ -89,7 +95,7 @@ class Borrowing(models.Model):
     # end time needn't be defined when starting a borrowing, but it can be set to an anticipated time to indicate when a bike might become available in the future?? 
     # if endtime is unset, it is assumed that the bike is being borrowed indefinetly (until it is acutally returned)
     end_time = models.DateTimeField()
-
+    
     borrower = models.ForeignKey(
         # which user borrowed the bike
         User,
@@ -105,23 +111,42 @@ class Borrowing(models.Model):
     )
 
     # if the key has been successfully given out/returned to the student
-    key_received = models.BooleanField()
-    key_returned = models.BooleanField()
+    # before key are handed out, the field can be null, so null=True
+    key_received = models.BooleanField(null=True)
+    key_returned = models.BooleanField(null=True)
 
     issue = models.ForeignKey(
         # if something requires manual attention, the borrower can attach an issue to the borrowing which will notify the bike steward for them to resolve it
         Issue, 
         # prevent the corresponding issue to be deleted (to keep a record)
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
+        null=True
         )
 
-    # returns a short readable string with all information
+    # returns a short readable string with custom date at hour:minute format (to make the result shorter than printing the whole datetime)
+    # use astimezone() to get the local time instead of UTC
     def __str__(self) -> str:
-        return "{0} borrowed {1} at {2}".format(
-            self.borrower,
-            self.borrowed_bike,
-            self.start_time,
-        )
+        # borrowing is in the past
+        if self.end_time < timezone.now():
+            return "{0}, {1}:{2} to {3}, {4}:{5} - {6} borrowed {7}".format(
+                self.start_time.astimezone().date(),
+                self.start_time.astimezone().hour,
+                self.start_time.astimezone().minute,
+                self.end_time.astimezone().date(),
+                self.end_time.astimezone().hour,
+                self.end_time.astimezone().minute,
+                self.borrower,
+                self.borrowed_bike,
+            )
+        # borrowing is ongoing
+        else:
+            return "From {0}, {1}:{2} - {3} is borrowing {4}".format(
+                self.start_time.astimezone().date(),
+                self.start_time.astimezone().hour,
+                self.start_time.astimezone().minute,
+                self.borrower,
+                self.borrowed_bike,
+            )
 
     
 

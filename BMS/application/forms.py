@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django import forms
 from django.utils.translation import gettext, gettext_lazy as _
 from django.utils.timezone import now
+from django.db.models import Q
 
 from .validators import schoolEmailValidator
 from .models import Bike, Borrowing, User
@@ -37,20 +38,27 @@ class LoginForm(AuthenticationForm):
 
 
 class BikeCreationForm(forms.ModelForm):
+
+    # the steward must have own_bike permission
+    steward = forms.ModelChoiceField(queryset=User.objects.filter(
+        Q(is_superuser=True) |
+        Q(user_permissions__codename="own_bike") |
+        Q(groups__permissions__codename="own_bike")).distinct()
+        )
     
     class Meta:
         model = Bike
         fields = ["number", "steward", "size"]
 
 
-class BorrowingCreationForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        self.fields 
+class BorrowingCreationForm(forms.Form):
+
+    # i only need the endtime, everything else is determined programatically
+    end_time = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'], required=True)
 
     class Meta:
         model = Borrowing
-        fields = ["borrowed_bike", "start_time", "borrower", ]
+        fields = ["end_time",]
 
 
 class ChangeUserForm(forms.ModelForm):       

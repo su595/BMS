@@ -27,8 +27,8 @@ urlpatterns = [
     path("createBike/", views.CreateBikeView.as_view(), name="createBike"),
     path("bikeList/", views.BikeListView.as_view(), name="bikeList"),
     path("borrow/", views.BorrowBikeView.as_view(), name="borrow"),
+    path("borrow/<bikepk>", views.BorrowBikeView.as_view(), name="borrow"),
     path("userList/", views.UserListView.as_view(), name="user-view"),
-    path("user/", views.UserListView.as_view(), name="user-view"),
+    path("user/", views.UserListView.as_view(), name="user-view"), # dont change anything around the user-change, otherwise it gets messy
     path("user/<pk>", views.ChangeUserView.as_view(), name="user-change"),
-    #path("user/", views.ChangeUserView.as_view(), name="user-change"),
 ]

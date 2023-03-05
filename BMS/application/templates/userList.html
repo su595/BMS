@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block header %}
+{% block title %}
 <h1>All users</h1>
 {% endblock %}
 
@@ -20,7 +20,6 @@
     <!--If the authenticated user can change users, display a link to change the displayed user-->
     {% if perms.application.change_user %}
     <a href="{% url 'user-change' user.id %}">Edit</a>
-     
     {% endif %}
 </p>
 

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block header %}
+{% block title %}
 <h1>All bikes</h1>
 {% endblock %}
 
@@ -12,18 +12,19 @@
 <p>
     Number: {{ bike.number }} <br>
     Steward: {{ bike.steward }} <br>
-    Size: {{ bike.size }}
+    Size: {{ bike.size }} <br>
+    <!-- Similar to userList, if the user can borrow a bike, display the link-->
+    {% if perms.application.add_borrowing %}
+    <a href="{% url 'borrow' bike.id %}">Borrow this bike</a>
+    {% endif %}
 </p>
 {% endfor %}
 
 <h2>All Borrowings</h2>
-{% for borrow in Borrowings %}
+{% for borrowing in Borrowings %}
     <p>
-        {% if borrow.key_returned %}
-            {{ borrow.borrower}} borrowed bike no. {{ borrow.borrowed_bike.number }} from {{ borrow.start_time }} to {{ borrow.end_time }}
-        {% else %}
-            {{ borrow.borrower}} is borrowing bike no. {{ borrow.borrowed_bike.number }} since {{ borrow.start_time }}
-        {% endif %}
+        {{ borrowing }}
+        
 
         {% if borrow.issue is not None %}
             <br>

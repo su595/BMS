@@ -31,4 +31,5 @@ Here I try to keep track of tutorials and references used throughout the develop
 - [Login System](https://rahmanfadhil.com/django-login-with-email/)
 - [Class-based views](https://docs.djangoproject.com/en/4.1/topics/class-based-views/)
 - [Collapsible Sidebar with CSS](https://stackoverflow.com/questions/30574902/collapsible-flexible-width-sidebar-using-only-css)
+- [Interactive Datetime Picker](https://xdsoft.net/jqplugins/datetimepicker/)
 
