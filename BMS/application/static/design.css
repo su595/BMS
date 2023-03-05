@@ -28,6 +28,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: left;
+    align-content: center;
     height: 20%;
     background-color: whitesmoke;
 }
@@ -46,7 +47,6 @@ body {
     background-color: lightgray;
 }
 
-
 #button-image {
     background-size: cover;
     background-image: url("/static/menu.png");
@@ -54,10 +54,26 @@ body {
     height: 100%;
 }
 
-#header {
-    width: 90%;
-    height: 100%;
+#header-block{
+    flex-grow: 1;
 }
+
+.header-login{
+    margin: auto;
+    margin-right: 1rem;
+    padding: 0.7rem;
+    text-decoration: none;
+    color: black;
+}
+#login-button{
+    background-color: lightgray;
+    border-radius: 10px;
+
+}
+#login-button:hover{
+    background-color: grey;
+}
+
 
 .content-container {
     display: flex;

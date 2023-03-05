@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="{% static 'design.css' %}">
         <meta name="Bike management system">
         <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'> <!--Damit das reinzoomen bei Smartphones verhindert wird (strg-v aus dem Internet)-->
-        <link rel="shortcut icon" href="/static/favicon.png" />
+        <link rel="shortcut icon" href="{% static 'favicon.png' %}">
         {% block title %}
         <title> BMS </title>
         {% endblock %}
@@ -22,29 +22,56 @@
                     <div id="button-image"></div>
                 </button>
                     
-                <div id="header">
+                <div id="header-block">
                     {% block header %}
                     {% endblock %}
                 </div>
+
+                <!--Display the username when logged in-->
+                {% if user.is_authenticated %}
+                <p class="header-login">
+                    Logged in as {{user}}
+                </p>
+                {% else %}
+                <p class="header-login">
+                    Not logged in
+                </p>
+                {% endif %}
+
+                <!--if user is logged in, display the logout link-->
+                {% if user.is_authenticated %}
+                    <a class="header-login" id="login-button" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a class="header-login" id="login-button" href="{% url 'login' %}">Login</a>
+                {% endif %}
             </div>
             
 
             <div class="content-container">
                 <div class="left" id="left">
-                    <!--if user is logged in, change the label of the login link-->
-                    <a class="page-links" href="{% url 'login' %}">
-                        {% if user.is_authenticated %}
-                            Logout
-                        {% else %}
-                            Login
-                        {% endif %}
-                    </a>
+                    <!--Before each link is displayed, it is checked whether the user has the required permissions to access the site. 
+                        This doesn't replace the authorization check at each site, it just makes the navigation clearer-->
+                    {% if user.is_authenticated %}
+                        <a class="page-links" href="{% url 'profile' %}">Profile</a>
+                    {% endif %}
+                    {% if not user.is_authenticated %}
+                        <a class="page-links" href="{% url 'register' %}">Register</a>
+                    {% endif %}
+                    {% if perms.application.add_bike %}
+                        <a class="page-links" href="{% url 'createBike' %}">Create Bike</a>
+                    {% endif %}
+                    {% if perms.application.view_bike %}
+                        <a class="page-links" href="{% url 'bikeList' %}">Bike List</a>
+                    {% endif %}
+                    {% if perms.application.add_borrowing %}
+                        <a class="page-links" href="{% url 'borrow' %}">Borrow bike</a>
+                    {% endif %}
+                    {% if perms.application.view_bike %}
+                        <a class="page-links" href="{% url 'user-view' %}">User List</a>
+                    {% endif %}
 
-                    <a class="page-links" href="{% url 'profile' %}">Profile</a>
-                    <a class="page-links" href="{% url 'register' %}">Register</a>
-                    <a class="page-links" href="{% url 'createBike' %}">Create Bike</a>
-                    <a class="page-links" href="{% url 'bikeList' %}">Bike List</a>
-
+                    
+                    
 
                 </div>
 

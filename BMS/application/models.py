@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from .validators import schoolEmailValidator, bikeSizeValidator
-
+from django.urls import reverse
 
 # refer to ERM diagrams on my tablet
 # some comments refer to features which haven't been implemented yet!!
@@ -10,15 +10,13 @@ from .validators import schoolEmailValidator, bikeSizeValidator
 
 # the custom user doesn't have a username field, but uses the email as unique identifier
 class User(AbstractUser):
-    name = models.TextField(
-        # limit name length to 30 characters
-        max_length=30, 
-        help_text="Preferred name"
-    )
+    
+    # change label of first_name to preferred name
+    first_name = models.CharField(_("preferred name"), max_length=150, blank=True)
 
 
     email = models.EmailField(
-        # set a "verbose name" (not sure what is does...)
+        # set a "verbose name" (not sure what is does...). I think it displays this name when rendered as html
         _('email address'), 
         # set email field as unique, necessary to be used for authentication
         unique=True, 
@@ -30,24 +28,15 @@ class User(AbstractUser):
         }
     )
 
-    # if printed, print the name and email nicely
-    def __str__(self) -> str:
-        return "{0} ({1})".format(
-            self.name,
-            self.email
-        )
-
-    # remove the username field from abstract user
-    # NOT POSSIBLE because this breaks the inbuilt superuser
-
-    # redefine standard fields
-    EMAIL_FIELD = 'email'
+    # if printed, return only the preferred name
+    def __str__(self) -> str:        
+        return self.first_name
     
-    # to make useruser work
-    #USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-
+        
+    def get_absolute_url(self):
+        return reverse('user-change', kwargs={'pk': self.pk})
     
+
 class Bike(models.Model):
     
     SIZES = [
@@ -69,7 +58,8 @@ class Bike(models.Model):
         max_length=1, 
         # constrain possible values to SIZES
         choices=SIZES,
-        default=""
+        default="",
+        validators=[bikeSizeValidator],
     )
 
     steward = models.ForeignKey(
@@ -79,9 +69,8 @@ class Bike(models.Model):
         on_delete=models.PROTECT
     )
 
-    # if printed, print the bike number
     def __str__(self) -> str:
-        return self.number
+        return str(self.number)
 
 
 class Issue(models.Model):
@@ -96,7 +85,7 @@ class Issue(models.Model):
 
 class Borrowing(models.Model):
     # the anticipated start and end times of the borrowing
-    start_time = models.DateTimeField()
+    start_time = models.DateTimeField(help_text="Leave blank for current time")
     # end time needn't be defined when starting a borrowing, but it can be set to an anticipated time to indicate when a bike might become available in the future?? 
     # if endtime is unset, it is assumed that the bike is being borrowed indefinetly (until it is acutally returned)
     end_time = models.DateTimeField()
@@ -105,7 +94,7 @@ class Borrowing(models.Model):
         # which user borrowed the bike
         User,
         # If the user is deleted, the associated borrowings are deleted too
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     
     borrowed_bike = models.ForeignKey(
@@ -126,15 +115,15 @@ class Borrowing(models.Model):
         on_delete=models.PROTECT
         )
 
-    # returns a readable string with all information
+    # returns a short readable string with all information
     def __str__(self) -> str:
-        return "Bike number {0} was borrowed from {1} to {2} by {3}.".format(
+        return "{0} borrowed {1} at {2}".format(
+            self.borrower,
             self.borrowed_bike,
             self.start_time,
-            self.end_time,
-            self.borrower
         )
 
+    
 
 
 

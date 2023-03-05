@@ -6,14 +6,18 @@ Eventually supposed to be hosted locally in the school network on a raspberry pi
 ## (current) Functionaltities
 *Todo: better website design*
 ### User registration, login and logout
-In `/register`, users can register a new account using a school email. It uses Django-inbuilt functionality, so there's a fair amount of security and checks in place.
+In `/register`, users can register a new account using a school email as unique identifier. It uses Django-inbuilt functionality, so there's a fair amount of security and checks in place.
 
-*Todo: more checks for a valid school email, restrict registering to the unauthenticated*
+Users can logout and login depending on if they're already authenticated.
+Staff can edit users in `user/<pk>`.
 
-In '/login', users can logout and login depending on if they're already authenticated.
+### Permission groups and checks
+Four groups (no permissions, student, bike repair and staff) exist with varying permissions.
+To access each view, different permissions are required. Staff can change the permission group of users. 
 
-### Profile
-`/profile` is a placeholder site to display all available account info.
+### Bikes, Borrowings and Issues
+Currently mostly unfunctional models, however there are views to create and display them.
+
 
 ## Hardware
 In the final version, there is a cabinet in H6 featuring holes for each bike key and sensors to detect the presence of keys. The cabinet has an electronically locked door. An arduino communicates with the server about the presence of keys and opens the door when a borrowing request is made (and vice versa when bike keys are returned).

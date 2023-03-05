@@ -6,17 +6,32 @@
 
 
 {% block content %}
-<h2>List of all Bikes</h2>
 
+<h2>All Bikes</h2>
 {% for bike in Bikes %}
 <p>
-    Bike number: {{ bike.number }}
-    <br>
-    Bike steward: {{ bike.steward }}
-    <br>
+    Number: {{ bike.number }} <br>
+    Steward: {{ bike.steward }} <br>
     Size: {{ bike.size }}
 </p>
 {% endfor %}
 
-whats happening
+<h2>All Borrowings</h2>
+{% for borrow in Borrowings %}
+    <p>
+        {% if borrow.key_returned %}
+            {{ borrow.borrower}} borrowed bike no. {{ borrow.borrowed_bike.number }} from {{ borrow.start_time }} to {{ borrow.end_time }}
+        {% else %}
+            {{ borrow.borrower}} is borrowing bike no. {{ borrow.borrowed_bike.number }} since {{ borrow.start_time }}
+        {% endif %}
+
+        {% if borrow.issue is not None %}
+            <br>
+            <b>There's an issue with this borrowing!</b>
+            <br>
+            {{ borrow.issue }}
+        {% endif %}
+    </p>
+{% endfor %}
+
 {% endblock %}

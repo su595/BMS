@@ -2,16 +2,16 @@
 {% extends "base.html" %}
 
 {% block header %}
-  <h1>Regsiter a new bike</h1>
+  <h1>Borrow a bike</h1>
 {% endblock %}
 
 
 {% block content %}
 
-  <form action="{% url 'createBike' %}"  method="post">
+  <form action="{% url 'borrow' %}"  method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" id="submit">Create new bike!</button>
+    <button type="submit" id="submit">Borrow this bike!</button>
   </form>
 
 {{ form.BikeCreationForm.errors }}

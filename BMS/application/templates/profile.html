@@ -8,11 +8,18 @@
 
 {% block content %}
 <p>
+    {{ user }}
+    
     Your email is {{ user.email }}
     <br>
     Your username is {{ user.username }}
     <br>
-    Your preferred name is {{ user.name }}
+    Your preferred name is {{ user.first_name }}
+    <br>
+    Group: {{ user.groups.all }}
+    <br>
+    PK: {{ user.id }}
+
 </p>
 <h2>
     Bike borrowing history

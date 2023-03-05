@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block header %}
+<h1>All users</h1>
+{% endblock %}
+
+
+{% block content %}
+
+<h2>List of Users</h2>
+{% for user in Users %}
+<p>
+    Email: {{ user.email }} <br>
+    Username: {{ user.username }} <br>
+    Preferred name: {{ user.first_name }} <br>
+    Group: {{ user.groups.all }} <br>
+    Is superuser: {{ user.is_superuser }} <br>
+
+
+    <!--If the authenticated user can change users, display a link to change the displayed user-->
+    {% if perms.application.change_user %}
+    <a href="{% url 'user-change' user.id %}">Edit</a>
+     
+    {% endif %}
+</p>
+
+{% endfor %}
+
+{% endblock %}

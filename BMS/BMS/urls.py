@@ -15,15 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from application.views import LoginView, RegisterView, ProfileView, IndexView, LogoutView, CreateBikeView, BikeListView
+from application import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", IndexView.as_view(), name="index"),
-    path("register/", RegisterView.as_view(), name="register"),
-    path("login/", LoginView.as_view(), name="login"),
-    path("logout/", LogoutView.as_view(), name="logout"),
-    path("profile/", ProfileView.as_view(), name="profile"),
-    path("createBike/", CreateBikeView.as_view(), name="createBike"),
-    path("bikeList/", BikeListView.as_view(), name="bikeList"),
+    path("", views.IndexView.as_view(), name="index"),
+    path("register/", views.RegisterView.as_view(), name="register"),
+    path("login/", views.LoginView.as_view(), name="login"),
+    path("logout/", views.LogoutView.as_view(), name="logout"),
+    path("profile/", views.ProfileView.as_view(), name="profile"),
+    path("createBike/", views.CreateBikeView.as_view(), name="createBike"),
+    path("bikeList/", views.BikeListView.as_view(), name="bikeList"),
+    path("borrow/", views.BorrowBikeView.as_view(), name="borrow"),
+    path("userList/", views.UserListView.as_view(), name="user-view"),
+    path("user/", views.UserListView.as_view(), name="user-view"),
+    path("user/<pk>", views.ChangeUserView.as_view(), name="user-change"),
+    #path("user/", views.ChangeUserView.as_view(), name="user-change"),
 ]

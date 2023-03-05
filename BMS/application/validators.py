@@ -15,6 +15,7 @@ def schoolEmailValidator(email):
 
     return email
 
+
 def bikeSizeValidator(size):
 
     # if size isn't exactly s,m or l (case-insensitive)
